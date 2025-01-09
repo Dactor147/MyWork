@@ -1,5 +1,11 @@
 -- Created to anonymize certain fils so that the data can be used outside the production environment
 --Created for a pubically available software called HIFIS
+-- Updates the MetaDataSearch column in the HIFIS_Addresses table
+-- Generates a new value for MetaDataSearch by combining:
+--   1. A substring from a newly generated GUID (NEWID()), 
+--      truncated to half the length of the MetaDataSearch column's current value.
+--   2. A substring from an absolute checksum value of another new GUID,
+--      also truncated to half the length of the MetaDataSearch column's current value.
 UPDATE HIFIS_Addresses SET HIFIS_Addresses.MetaDataSearch = LEFT(NEWID(), LEN(HIFIS_Addresses.MetaDataSearch)/2) + LEFT(ABS(CHECKSUM(NEWID())), LEN(HIFIS_Addresses.MetaDataSearch)/2)
 UPDATE HIFIS_Appointments SET HIFIS_Appointments.Comments = LEFT(NEWID(), LEN(HIFIS_Appointments.Comments)/2) + LEFT(ABS(CHECKSUM(NEWID())), LEN(HIFIS_Appointments.Comments)/2)
 UPDATE HIFIS_Appointments SET HIFIS_Appointments.Description = LEFT(NEWID(), LEN(HIFIS_Appointments.Description)/2) + LEFT(ABS(CHECKSUM(NEWID())), LEN(HIFIS_Appointments.Description)/2)
